@@ -18,7 +18,15 @@ def findAverageCityMPGbyCylinder(carDataList):
 
 
 def findAverageHWYbyClass(carDataList):
-    classes = [(cls,0) for cls in carDataList[]]
+    classes = {car["class"]: [] for car in carDataList}
+    listResult = []
+    for car in carDataList:
+        classes[car["class"]].append(float(car["hwy"]))
+    for cls in classes:
+        sumValue = sum(classes[cls])
+        listResult.append((cls,sumValue/len(classes[cls])))
+    listResult.sort(key= lambda x: x[0])
+    return listResult
 
 if __name__ == '__main__':
     with open("./data/mpg.csv") as carData:
@@ -27,5 +35,4 @@ if __name__ == '__main__':
     print(carDataList[0].keys())
     print("Average CITY MPG for all cars in data: "+str(findAverageCityMPG(carDataList)))
     print(findAverageCityMPGbyCylinder(carDataList))
-
-
+    print(findAverageHWYbyClass(carDataList))
