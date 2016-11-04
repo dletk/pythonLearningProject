@@ -25,7 +25,7 @@ def findAverageHWYbyClass(carDataList):
     for cls in classes:
         sumValue = sum(classes[cls])
         listResult.append((cls,sumValue/len(classes[cls])))
-    listResult.sort(key= lambda x: x[0])
+    listResult.sort(key= lambda x: x[1])
     return listResult
 
 if __name__ == '__main__':

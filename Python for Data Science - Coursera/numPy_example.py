@@ -17,7 +17,6 @@ if __name__ == '__main__':
     # we need to check to make sure there is no reference to the matrix in the code
     # matrix3.resize(5,5)  # Cannot work since there is reference to the matrix before
     matrix4 = np.linspace(1,5,50)
-    print
     print(matrix4)  # Now matrix4 is a 1x50 matrix
     matrix4.resize(5,5)  # Now matrix4 is 5x5 matrix, the last unused elements it cut down.
     print(matrix4)
@@ -97,3 +96,60 @@ if __name__ == '__main__':
     matrix1 = matrix1.astype("f8")
     print(matrix1.dtype)
     print(matrix1)
+    print("===============================================================================")
+    print("Indexing/Slicing")
+    matrix1 = np.arange(13)**2
+    print(matrix1)
+    matrix2 = np.arange(36).reshape(6,6)
+    print(matrix2)
+    print("Get the value from the 2D array")
+    value22 = matrix2[2,2]
+    print("Value at 3rd row, 3 col col: "+str(value22))
+    print("Get the value of a row or cols entirely")
+    value_row2 = matrix2[1,]
+    print("Row 2:"+str(value_row2))
+    print("Get the value of a row or cols in a range")
+    value_col2_24 = matrix2[2:4,1]
+    print("Col 2, value from row 2 to 4 exclusively: "+str(value_col2_24))
+    print("Get every second data from that last row:")
+    value_last_e2nd = matrix2[-1,::2]
+    print(value_last_e2nd)
+    # We can use the comparison inside the square bracket. It will return an array with elements match the requirement
+    # from the original array.
+    print("Get all element of the array that is > 25:")
+    matrix3 = matrix2[matrix2>25]
+    print(matrix3)
+    print("Get all element of the array that is even:")
+    matrix3 = matrix2[matrix2%2==0]
+    print(matrix3)
+    print("Set all the element that is not even to be 99, this will modified the matrix")
+    matrix2[matrix2%2!=0] = 99
+    print(matrix2)
+    print("===============================================================================")
+    print("Copying data")
+    print("Create a matrix contain first 3 cols and rows of matrix2")
+    matrix4 = matrix2[:3,:3]
+    print(matrix4)
+    print("Set all element in this matrix to be 0")
+    matrix4[:] = 0
+    print(matrix4)
+    print(matrix2)
+    # As we can see above, the original matrix2 ALSO BE CHANGED WHEN WE CHANGED matrix4.
+    # If we want to copy a matrix and let the original matrix unchanged, we have to use method copy
+    matrix5 = matrix2.copy()
+    print(matrix5)
+    matrix5[:] = 0
+    print(matrix5)
+    print(matrix2)
+    matrix6 = matrix2.copy()[:3,:3]
+    matrix6[:] = 9
+    print(matrix2)
+    print(matrix6)
+    print("===============================================================================")
+    print("Iterating over an array")
+    print("Create a 4x3 array with number from 0 to 9")
+    matrix10 = np.random.randint(0,10,(4,3))
+    print(matrix10)
+    matrix_a = np.arange(1,10,1).reshape(3,3)
+    matrix_b = np.random.randint(0,10,(3,3))
+    print(matrix_a+matrix_b)
