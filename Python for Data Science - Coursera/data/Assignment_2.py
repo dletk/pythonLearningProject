@@ -14,7 +14,7 @@
 # 
 # The columns are organized as # of Summer games, Summer medals, # of Winter games, Winter medals, total # number of games, total # of medals. Use this dataset to answer the questions below.
 
-# In[1]:
+# In[3]:
 
 import pandas as pd
 
@@ -95,7 +95,7 @@ answer_two()
 # 
 # *This function should return a single string value.*
 
-# In[14]:
+# In[47]:
 
 def answer_three():
     winGoldBoth = df[(df["Gold"]>0)&(df["Gold.1"]>0)]
@@ -130,18 +130,19 @@ answer_four()
 # 
 # *This function should return a single string value.*
 
-# In[19]:
+# In[4]:
 
 census_df = pd.read_csv('census.csv')
 census_df
 
 
-# In[24]:
+# In[77]:
 
 def answer_five():
-    byState = census_df.set_index("STNAME")
-    return byState["COUNTY"].idxmax()
-
+    byState = census_df[census_df["SUMLEV"]==50]
+    byState = byState[["STNAME","SUMLEV"]]
+    result = byState.groupby("STNAME").sum()
+    return result["SUMLEV"].idxmax()
 answer_five()
 
 
@@ -150,20 +151,19 @@ answer_five()
 # 
 # *This function should return a list of string values.*
 
-# In[85]:
+# In[24]:
 
 def answer_six():
     byState = census_df[census_df["SUMLEV"]==50].copy()
     byState = byState[["STNAME","CENSUS2010POP"]]
     byState.sort("CENSUS2010POP", inplace = True, ascending = False)
     byState = byState.groupby("STNAME").head(3)
-#     byState.set_index("STNAME", inplace = True)
     result = byState.groupby("STNAME").sum()
 #     result.sort("CENSUS2010POP").head(3)
 #     print(result.nlargest(3,"CENSUS2010POP").index)
     return result.nlargest(3,"CENSUS2010POP").index.tolist()
 
-print(answer_six())
+answer_six()
 
 
 # ### Question 7
@@ -173,10 +173,19 @@ print(answer_six())
 # 
 # *This function should return a single string value.*
 
-# In[ ]:
+# In[110]:
 
 def answer_seven():
-    return "YOUR ANSWER HERE"
+    data_byPop_1015 = census_df[census_df["SUMLEV"]==50]
+    data_byPop_1015 = data_byPop_1015.ix[:,("POPESTIMATE2010","POPESTIMATE2011","POPESTIMATE2012","POPESTIMATE2013","POPESTIMATE2014","POPESTIMATE2015","CTYNAME")]
+    data_byPop_1015.set_index("CTYNAME", inplace=True)
+    minValue = data_byPop_1015.min(axis=1)
+    maxValue = data_byPop_1015.max(axis=1)
+    absoluteChange = maxValue - minValue
+#     print(data_byPop_1015.min())
+
+    return absoluteChange.idxmax()
+answer_seven()
 
 
 # ### Question 8
@@ -186,8 +195,16 @@ def answer_seven():
 # 
 # *This function should return a 5x2 DataFrame with the columns = ['STNAME', 'CTYNAME'] and the same index ID as the census_df (sorted ascending by index).*
 
-# In[ ]:
+# In[117]:
 
 def answer_eight():
-    return "YOUR ANSWER HERE"
+    result = census_df[((census_df["REGION"]==1)|(census_df["REGION"]==2))&(census_df["CTYNAME"].str.startswith("Washington"))&(census_df["POPESTIMATE2015"]>census_df["POPESTIMATE2014"])][["STNAME","CTYNAME"]]
+    return result
+
+answer_eight()
+
+
+# In[ ]:
+
+
 
